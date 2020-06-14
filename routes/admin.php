@@ -38,16 +38,12 @@ Route::group(['namespace' =>'Admin','middleware'=>'auth:admin'],function (){
 
     ################# Begin Main Categories Routes #######################
 
-    Route::group(['prefix'=>'categories'],function (){
-
-        Route::resource('/','MailCategoryController');
+        Route::resource('/categories','MainCategoryController');
 //        Route::get('/create','LanguageController@create')->name('admin.languages.create');
 //        Route::post('/store','LanguageController@store')->name('admin.languages.store');
 //        Route::get('edit/{id}','LanguageController@edit')->name('admin.languages.edit');
 //        Route::put('/update/{id}','LanguageController@update')->name('admin.languages.update');
 //        Route::get('/delete/{id}','LanguageController@destroy')->name('admin.languages.delete');
-
-    });
 
     ################# End Main Categories Routes #######################
 

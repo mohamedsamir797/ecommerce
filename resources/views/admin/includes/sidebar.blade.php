@@ -28,10 +28,10 @@
                             class="badge badge badge-danger badge-pill float-right mr-2">{{ App\Models\MainCategory::active()->count() }}</span>
                 </a>
                 <ul class="menu-content">
-                    <li class="active"><a class="menu-item" href=""
+                    <li class="active"><a class="menu-item" href="{{ route('categories.index') }}"
                                           data-i18n="nav.dash.ecommerce"> عرض الكل </a>
                     </li>
-                    <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
+                    <li><a class="menu-item" href="{{ route('categories.create') }}" data-i18n="nav.dash.crypto">أضافة
                             قسم جديد </a>
                     </li>
                 </ul>

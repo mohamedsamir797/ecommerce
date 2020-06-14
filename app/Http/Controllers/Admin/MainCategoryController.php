@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MainCategory;
-use Illuminate\Support\Facades\Config;
+use App\Http\Requests\MainCategoryRequest;
 
-class MailCategoryController extends Controller
+
+class MainCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +29,7 @@ class MailCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.MainCategory.create');
     }
 
     /**
@@ -37,9 +38,9 @@ class MailCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MainCategoryRequest $request)
     {
-        //
+        return $request->all();
     }
 
     /**
