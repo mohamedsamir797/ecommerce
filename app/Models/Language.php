@@ -14,11 +14,11 @@ class Language extends Model
         return $query->where('active', 1) ;
     }
     public function scopeSelection($query){
-        return $query->select('abbr','locale','name','direction','active');
+        return $query->select('id','abbr','locale','name','direction','active');
     }
 
-    public function getActiveAttribute($val){
-        return $val == 1 ? 'مفعل' : 'غير مفعل' ;
+    public function getActive(){
+        return $this->active == 1 ? 'مفعل' : 'غير مفعل' ;
     }
 
 }

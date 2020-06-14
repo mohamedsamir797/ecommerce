@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Language;
 use Illuminate\Http\Request;
 use App\Http\Requests\LanguageRequest ;
+use mysql_xdevapi\Exception;
+
 class LanguageController extends Controller
 {
     /**
@@ -64,7 +66,11 @@ class LanguageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $language = Language::find($id);
+        if (!$language){
+            return redirect()->route('admin.languages')->with(['error' => 'هذه الصفحة غير موجودة']);
+        }
+        return view('admin.languages.edit',compact('language'));
     }
 
     /**
@@ -74,9 +80,23 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(LanguageRequest $request, $id)
     {
-        //
+        try{
+            $language = Language::find($id);
+            if (!$language){
+                return redirect()->route('admin.languages.edit',$id)->with(['error' => 'هذه الصفحة غير موجودة']);
+            }
+            if (! $request->has('active'))
+            $request->request->add(['active' => 0 ]);
+
+            $language->update($request->all());
+            return redirect()->route('admin.languages')->with(['success' => 'تم تحديث البيانات بنجاح']);
+
+        }catch (Exception $ex){
+            return redirect()->route('admin.languages.edit',$id)->with(['error' => 'هذه الصفحة غير موجودة']);
+        }
+
     }
 
     /**
@@ -87,6 +107,18 @@ class LanguageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $language = Language::find($id);
+            if (!$language){
+                return redirect()->route('admin.languages')->with(['error' => 'هذه الصفحة غير موجودة']);
+            }
+            $language->delete();
+            return redirect()->route('admin.languages')->with(['success'=>'تم مسح البيانات بنجاح']);
+
+        }catch (\Exception $ex){
+            return redirect()->route('admin.languages')->with(['error'=>'هناك خطأ حاول في وقت لاحق']);
+
+        }
+
     }
 }

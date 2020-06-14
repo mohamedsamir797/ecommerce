@@ -27,7 +27,6 @@ class LanguageRequest extends FormRequest
             'name' => 'required|string|max:100',
             'abbr' => 'required|string|max:10',
             'direction' => 'required|in:rtl,ltr',
-            'active' => 'required|in:0,1'
         ];
     }
     public function messages()
@@ -38,7 +37,7 @@ class LanguageRequest extends FormRequest
             'name.string' => 'اسم اللغة لابد ان يكون احرف',
             'name.max' => 'اسم اللغة لابد ان لا يزيد عن 100 حرف',
             'abbr.string' => 'الاختصار لابد ان يكون احرف',
-            'abbr.max' => 'اسم اللغة لابد ان لا يزيد عن 10 حرف'
+            'abbr.max' => 'اسم اللغة لابد ان لا يزيد عن 10 حرف',
         ];
     }
 }
