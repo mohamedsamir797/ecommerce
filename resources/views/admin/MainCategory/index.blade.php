@@ -45,11 +45,12 @@
                                     <div class="card-content collapse show">
                                         <div class="card-body card-dashboard">
                                             <table
-                                                    class="table display nowrap table-striped table-bordered ">
+                                                    class="table display nowrap table-striped table-bordered scroll-horizontal ">
                                                 <thead>
                                                 <tr>
-                                                    <th> اللغة</th>
-                                                    <th>الاختصار</th>
+                                                    <th> القسم</th>
+                                                    <th>اللغة</th>
+                                                    <th>الصورة</th>
                                                     <th>الحالة</th>
                                                     <th>الإجراءات</th>
                                                 </tr>
@@ -60,8 +61,11 @@
                                                     @foreach($mainCategories as $category)
                                                         <tr>
                                                             <td>{{$category -> name}}</td>
-                                                            <td>{{$category -> translation_lang}}</td>
-                                                            <td>{{$category -> active }}</td>
+                                                            <td>{{ get_default_lang() }}</td>
+                                                            <td>
+                                                                <img src="{{ $category->photo }}" style="width: 100px;height: 80px;">
+                                                            </td>
+                                                            <td>{{$category -> getActive() }}</td>
 
                                                             <td>
                                                                 <div class="btn-group" role="group"
@@ -70,9 +74,11 @@
                                                                        class="btn btn-outline-primary btn-min-width box-shadow-3 mr-1 mb-1">تعديل</a>
 
 
-                                                                    <a href="{{route('categories.delete',$category -> id)}}"
+                                                                    <a href="{{route('categories.destroy',$category -> id)}}"
                                                                        class="btn btn-outline-danger btn-min-width box-shadow-3 mr-1 mb-1">حذف</a>
 
+                                                                    <a href="{{route('categories.destroy',$category -> id)}}"
+                                                                       class="btn btn-outline-warning btn-min-width box-shadow-3 mr-1 mb-1">الغاء تفعيل</a>
                                                                 </div>
                                                             </td>
                                                         </tr>

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MainCategory;
 use App\Http\Requests\MainCategoryRequest;
+use Illuminate\Support\Facades\DB;
+use mysql_xdevapi\Exception;
 
 
 class MainCategoryController extends Controller
@@ -40,7 +42,54 @@ class MainCategoryController extends Controller
      */
     public function store(MainCategoryRequest $request)
     {
-        return $request->all();
+        try {
+            $main_categories = collect($request->category);
+
+            $filter = $main_categories->filter(function ($value, $key) {
+                return $value['abbr'] == get_default_lang();
+            });
+
+            $default_category = array_values($filter->all())[0];
+
+            $filepath = "";
+            if ($request->has('photo')) {
+                $filepath = uploadImage('maincategories', $request->photo);
+            }
+            DB::beginTransaction();
+
+            $default_category_id = MainCategory::insertGetId([
+                'translation_lang' => $default_category['abbr'],
+                'translation_of' => 0,
+                'name' => $default_category['name'],
+                'slug' => $default_category['name'],
+                'photo' => $filepath
+            ]);
+
+            $categories = $main_categories->filter(function ($value, $key) {
+                return $value['abbr'] != get_default_lang();
+            });
+
+            if ($categories) {
+                $categories_arr = [];
+                foreach ($categories as $category) {
+                    $categories_arr[] = [
+                        'translation_lang' => $category['abbr'],
+                        'translation_of' => $default_category_id,
+                        'name' => $category['name'],
+                        'slug' => $category['name'],
+                        'photo' => $filepath
+                    ];
+                }
+                MainCategory::insert($categories_arr);
+            }
+            DB::commit();
+            return redirect()->route('categories.index')->with(['success' => 'تم اضافة القسم بنجاح']);
+        }catch (Exception $e){
+            DB::rollBack();
+            return redirect()->route('categories.index')->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
+
     }
 
     /**

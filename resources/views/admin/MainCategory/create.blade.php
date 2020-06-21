@@ -77,10 +77,10 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="projectinput1"> أختصار اللغة  {{ __('messages.'.$lang->abbr) }}</label>
-                                                            <input type="text" value="" id="translation_lang"
+                                                            <input type="text" value="" id="abbr"
                                                                    class="form-control"
-                                                                   name="category[{{ $index }}][translation_lang]">
-                                                            @error("category.$index.translation_lang")
+                                                                   name="category[{{ $index }}][abbr]">
+                                                            @error("category.$index.abbr")
                                                             <span class="text-danger">{{ $message }}</span>
                                                             @enderror
                                                         </div>

@@ -27,7 +27,7 @@ class MainCategoryRequest extends FormRequest
             'photo' => 'required|mimes:jpg,jpeg,png',
             'category' =>'required|array|min:1',
             'category.*.name' =>'required',
-            'category.*.translation_lang' =>'required',
+            'category.*.abbr' =>'required',
             'category.*.active' =>'required',
         ];
     }
@@ -37,7 +37,7 @@ class MainCategoryRequest extends FormRequest
             'photo.required' => 'هذه الصورة مطلوبة',
             'category.required' => 'هذا القسم مطلوب',
             'category.*.name.required' => 'هذا الاسم مطلوب',
-            'category.*.translation_lang.required' => 'اختصار اللغة مطلوب',
+            'category.*.abbr.required' => 'اختصار اللغة مطلوب',
             'category.*.active.required' => 'هذه الحالة مطلوبة',
 
         ];

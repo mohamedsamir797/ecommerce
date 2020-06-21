@@ -39,11 +39,6 @@ Route::group(['namespace' =>'Admin','middleware'=>'auth:admin'],function (){
     ################# Begin Main Categories Routes #######################
 
         Route::resource('/categories','MainCategoryController');
-//        Route::get('/create','LanguageController@create')->name('admin.languages.create');
-//        Route::post('/store','LanguageController@store')->name('admin.languages.store');
-//        Route::get('edit/{id}','LanguageController@edit')->name('admin.languages.edit');
-//        Route::put('/update/{id}','LanguageController@update')->name('admin.languages.update');
-//        Route::get('/delete/{id}','LanguageController@destroy')->name('admin.languages.delete');
 
     ################# End Main Categories Routes #######################
 
@@ -55,8 +50,4 @@ Route::group(['namespace' =>'Admin','middleware'=>'guest:admin'],function (){
     Route::post('login','LoginController@Login')->name('admin.login');
 
 
-});
-
-Route::get('test',function (){
-    return show_name();
 });
