@@ -62,7 +62,7 @@
                                                 @if(get_language()->count() > 0)
                                                     @foreach( get_language() as $index => $lang)
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="projectinput1"> {{ __('messages.'.$lang->abbr) }} اسم القسم </label>
                                                             <input type="text" value="" id="name"
@@ -74,11 +74,12 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6" hidden>
                                                         <div class="form-group">
                                                             <label for="projectinput1"> أختصار اللغة  {{ __('messages.'.$lang->abbr) }}</label>
-                                                            <input type="text" value="" id="abbr"
+                                                            <input type="text" id="abbr"
                                                                    class="form-control"
+                                                                   value="{{ $lang->abbr }}"
                                                                    name="category[{{ $index }}][abbr]">
                                                             @error("category.$index.abbr")
                                                             <span class="text-danger">{{ $message }}</span>

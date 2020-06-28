@@ -93,7 +93,7 @@ class LanguageController extends Controller
             $language->update($request->all());
             return redirect()->route('admin.languages')->with(['success' => 'تم تحديث البيانات بنجاح']);
 
-        }catch (Exception $ex){
+        }catch (\Exception $ex){
             return redirect()->route('admin.languages.edit',$id)->with(['error' => 'هذه الصفحة غير موجودة']);
         }
 

@@ -84,7 +84,7 @@ class MainCategoryController extends Controller
             }
             DB::commit();
             return redirect()->route('categories.index')->with(['success' => 'تم اضافة القسم بنجاح']);
-        }catch (Exception $e){
+        }catch (\Exception $e){
             DB::rollBack();
             return redirect()->route('categories.index')->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
 
@@ -111,7 +111,12 @@ class MainCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+       $category = MainCategory::with('categories')->selection()->find($id);
+       if (!$category){
+           return redirect()->route('categories.index')->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+       }
+       return view('admin.MainCategory.edit',compact('category'));
+
     }
 
     /**
@@ -121,9 +126,41 @@ class MainCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MainCategoryRequest $request, $id)
     {
-        //
+        try{
+
+
+      $main_category =  MainCategory::find($id);
+      if (!$main_category){
+          return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+      }
+
+       $category =  array_values($request->category)[0];
+
+        if (! $request->has('category.0.active')){
+            $request->request->add(['active' => 0 ]);
+        }else
+            $request->request->add(['active' => 1 ]);
+
+
+            $main_category->update([
+            'name' => $category['name'] ,
+            'active' => $request->active
+            ]);
+
+            if ($request->has('photo')) {
+                $filepath = uploadImage('maincategories', $request->photo);
+                $main_category->update([
+                    'photo' => $filepath
+                ]);
+            }
+
+        return redirect()->route('categories.index')->with(['success' => 'تم تحديث القسم بنجاح']);
+        }catch (\Exception $e){
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
     }
 
     /**
