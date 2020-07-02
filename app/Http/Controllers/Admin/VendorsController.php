@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Vendor;
 use App\Models\MainCategory ;
 use App\Http\Requests\VendorRequest ;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VendorCreated ;
 
@@ -63,6 +64,7 @@ class VendorsController extends Controller
                 'email' => $request->email ,
                 'category_id' => $request->category_id ,
                 'active' => $request->active ,
+                'password' => $request->password
 
             ]);
 
@@ -94,7 +96,21 @@ class VendorsController extends Controller
      */
     public function edit($id)
     {
-        //
+        try{
+            $vendor = Vendor::selection()->find($id);
+            $mainCategories = MainCategory::active()->where('translation_of',0 )->get();
+
+            if (!$vendor){
+                return redirect()->back()->with(['error' => 'عفوا هذا المتجر غير موجود']);
+            }
+
+            return view('admin.vendors.edit',compact('vendor','mainCategories'));
+
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
     }
 
     /**
@@ -104,9 +120,58 @@ class VendorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(VendorRequest $request, $id)
     {
-        //
+        try{
+            $vendor = Vendor::selection()->find($id);
+
+            if (!$vendor){
+                return redirect()->back()->with(['error' => 'عفوا هذا المتجر غير موجود']);
+            }
+             DB::beginTransaction();
+
+            if ($request->has('logo')) {
+                $filepath = uploadImage('vendors', $request->logo);
+                Vendor::where('id',$id)
+                       ->update([
+                           'logo' => $filepath
+                       ]);
+            }
+
+            if (!$request->has('active'))
+                $request->request->add(['active' => 0]);
+            else
+                $request->request->add(['active' => 1]);
+
+            $data = $request->except('_token', 'id', 'logo', 'password');
+
+
+            if ($request->has('password') && !is_null($request->  password)) {
+
+                $data['password'] = $request->password;
+            }else{
+                Vendor::where('id', $id)
+                    ->update([
+                        'name' => $request->name ,
+                        'mobile' => $request->mobile ,
+                        'address' => $request->address ,
+                        'email' => $request->email ,
+                        'category_id' => $request->category_id ,
+                        'active' => $request->active ,
+                    ]);
+            }
+
+
+
+            DB::commit();
+            return redirect()->route('vendors.index')->with(['success' => 'تم التحديث المتجر بنجاح']);
+
+        }catch (\Exception $ex){
+            return $ex ;
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
     }
 
     /**

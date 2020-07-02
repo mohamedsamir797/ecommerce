@@ -122,9 +122,23 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-
-
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="projectinput1"> كلمة المرور </label>
+                                                            <input type="password" value="" id="password"
+                                                                   class="form-control"
+                                                                   placeholder="  "
+                                                                   name="password">
+                                                            @error("password")
+                                                            <span class="text-danger">{{$message}}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group mt-1">
@@ -156,11 +170,10 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-
+                                            </div>
                                                 <div id="map" style="height: 500px;width: 900px;"></div>
 
-                                            </div>
-                                            <div class="form-actions">
+                                                <div class="form-actions">
                                                 <button type="button" class="btn btn-warning mr-1"
                                                         onclick="history.back();">
                                                     <i class="ft-x"></i> تراجع
