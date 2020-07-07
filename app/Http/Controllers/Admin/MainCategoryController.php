@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 use App\Models\MainCategory;
 use App\Http\Requests\MainCategoryRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use mysql_xdevapi\Exception;
 
 
@@ -171,6 +173,44 @@ class MainCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+           $main_category =  MainCategory::find($id);
+
+           if (!$main_category){
+               return redirect()->back()->with(['error' => ' عفوا هذا القسم غير موجود ']);
+           }
+           $vendors = $main_category->vendors() ;
+
+           if (isset($vendors) && $vendors->count() > 0){
+               return redirect()->back()->with(['error' => ' لا يمكن حذف هذا القسم ']);
+           }
+              $image =  Str::after($main_category->photo,'assets/');
+              $image = base_path('assets/'.$image);
+              unlink($image);
+
+               $main_category->delete();
+               return redirect()->back()->with(['success' => ' تم حذف القسم بنجاح ']);
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
+    }
+    public function changeStatus($id){
+        try{
+            $main_category =  MainCategory::find($id);
+
+            if (!$main_category)
+                return redirect()->back()->with(['error' => ' عفوا هذا القسم غير موجود ']);
+
+           $status =  $main_category->active == 0 ? 1 : 0 ;
+
+            $main_category->update(['active' => $status ]);
+            return redirect()->back()->with(['success' => ' تم تحديث الحالة بنجاح ']);
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
     }
 }

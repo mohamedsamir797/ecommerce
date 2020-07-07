@@ -3,12 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Observers\MainCategoryObserver;
 class MainCategory extends Model
 {
     protected $fillable = ['translation_lang','translation_of','name','slug','photo','active'];
     protected $table = 'main_categories';
     protected $guarded = [] ;
+
+    protected static function boot()
+    {
+        parent::boot();
+        MainCategory::observe(MainCategoryObserver::class);
+    }
 
     public function scopeActive($query){
         return $query->where('active', 1) ;
@@ -27,6 +33,7 @@ class MainCategory extends Model
         return $this->hasMany(self::class,'translation_of');
     }
     public function vendors(){
-        return $this->hasMany(App\Models\Vendor::class,'category_id');
+        return $this->hasMany(\App\Models\Vendor::class,'category_id');
     }
+
 }

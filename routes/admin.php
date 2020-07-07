@@ -35,7 +35,9 @@ Route::group(['namespace' =>'Admin','middleware'=>'auth:admin'],function (){
 
     ################# Begin Main Categories Routes #######################
 
-        Route::resource('/categories','MainCategoryController');
+        Route::resource('/categories','MainCategoryController')->except('destroy');
+        Route::get('categories/{id}/delete','MainCategoryController@destroy')->name('categories.destroy');
+        Route::get('changeStatus/{id}','MainCategoryController@changeStatus')->name('categories.changeStatus');
 
     ################# End Main Categories Routes #######################
 
