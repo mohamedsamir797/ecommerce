@@ -44,7 +44,9 @@ Route::group(['namespace' =>'Admin','middleware'=>'auth:admin'],function (){
 
     ################# Begin Main Vendors Routes #######################
 
-    Route::resource('/vendors','VendorsController');
+    Route::resource('/vendors','VendorsController')->except('destroy');
+    Route::get('vendors/{id}/delete','VendorsController@destroy')->name('vendors.destroy');
+    Route::get('vendors/{id}/changeStatus','VendorsController@changeStatus')->name('vendors.changeStatus');
 
     ################# End Main Vendors Routes #######################
 

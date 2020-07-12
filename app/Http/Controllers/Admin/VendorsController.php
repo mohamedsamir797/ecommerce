@@ -10,6 +10,8 @@ use App\Http\Requests\VendorRequest ;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VendorCreated ;
+use Illuminate\Support\Str;
+
 
 class VendorsController extends Controller
 {
@@ -182,6 +184,40 @@ class VendorsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $vendor = Vendor::find($id);
+            if (!$vendor){
+                return redirect()->back()->with(['error' => 'عفوا هذا المتجر غير موجود']);
+            }
+
+            $image =  Str::after($vendor->logo,'assets/');
+            $image = base_path('assets/'.$image);
+            unlink($image);
+
+            $vendor->delete();
+            return redirect()->back()->with(['success' => 'تم حذف المتجر بنجاح']);
+
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+        }
+    }
+    public function changeStatus($id){
+        try{
+            $vendor = Vendor::find($id);
+
+            if (!$vendor){
+                return redirect()->back()->with(['error' => 'عفوا هذا المتجر غير موجود']);
+            }
+            $status = $vendor->active == 0 ? 1 : 0 ;
+
+            $vendor->update(['active' => $status]);
+
+            return redirect()->back()->with(['success' => 'تم تغيير حالة المتجر بنجاح']);
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
+
+        }
     }
 }

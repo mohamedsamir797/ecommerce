@@ -78,8 +78,14 @@
                                                                     <a href="{{route('vendors.destroy',$vendor -> id)}}"
                                                                        class="btn btn-outline-danger btn-min-width box-shadow-3 mr-1 mb-1">حذف</a>
 
-                                                                    <a href="{{route('vendors.destroy',$vendor -> id)}}"
-                                                                       class="btn btn-outline-warning btn-min-width box-shadow-3 mr-1 mb-1">الغاء تفعيل</a>
+                                                                    <a href="{{route('vendors.changeStatus',$vendor -> id)}}"
+                                                                       class="btn btn-outline-warning btn-min-width box-shadow-3 mr-1 mb-1">
+                                                                        @if($vendor->active == 0)
+                                                                            تفعيل
+                                                                            @else
+                                                                         الغاء التفعيل
+                                                                            @endif
+                                                                    </a>
                                                                 </div>
                                                             </td>
                                                         </tr>

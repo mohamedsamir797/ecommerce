@@ -188,7 +188,9 @@ class MainCategoryController extends Controller
               $image = base_path('assets/'.$image);
               unlink($image);
 
+               $main_category->categories()->delete();
                $main_category->delete();
+
                return redirect()->back()->with(['success' => ' تم حذف القسم بنجاح ']);
 
         }catch (\Exception $ex){
