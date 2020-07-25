@@ -32,10 +32,10 @@
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                 <span class="mr-1">مرحبا
                   <span
-                          class="user-name text-bold-700">  Ahmed Emam</span>
+                          class="user-name text-bold-700">  mohamed samir</span>
                 </span>
                             <span class="avatar avatar-online">
-                  <img  style="height: 35px;" src="" alt="avatar"><i></i></span>
+                  <img  style="height: 35px;" src="{{ asset('/assets/admin/images/portrait/small/avatar.png') }}" alt="avatar"><i></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href=""><i
                                         class="ft-user"></i> تعديل الملف الشحصي </a>
@@ -157,7 +157,7 @@
                                     <div class="media">
                                         <div class="media-left">
                         <span class="avatar avatar-sm avatar-online rounded-circle">
-                          <img src="admin/images/portrait/small/avatar-s-19.png"
+                          <img src="/assets/admin/images/portrait/small/avatar-s-19.png"
                                alt="avatar"><i></i></span>
                                         </div>
                                         <div class="media-body">

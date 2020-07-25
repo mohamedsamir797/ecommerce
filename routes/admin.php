@@ -42,13 +42,21 @@ Route::group(['namespace' =>'Admin','middleware'=>'auth:admin'],function (){
     ################# End Main Categories Routes #######################
 
 
-    ################# Begin Main Vendors Routes #######################
+    ################# Begin Sub Categories Routes #######################
+
+    Route::resource('/subcategories','SubCategoryController')->except('destroy');
+    Route::get('subcategories/{id}/delete','SubCategoryController@destroy')->name('categories.destroy');
+    Route::get('subcategories/{id}','SubCategoryController@changeStatus')->name('subcategories.changeStatus');
+
+    ################# End Sub Categories Routes #######################
+
+    ################# Begin  Vendors Routes #######################
 
     Route::resource('/vendors','VendorsController')->except('destroy');
     Route::get('vendors/{id}/delete','VendorsController@destroy')->name('vendors.destroy');
     Route::get('vendors/{id}/changeStatus','VendorsController@changeStatus')->name('vendors.changeStatus');
 
-    ################# End Main Vendors Routes #######################
+    ################# End  Vendors Routes #######################
 
 });
 
@@ -58,3 +66,15 @@ Route::group(['namespace' =>'Admin','middleware'=>'guest:admin'],function (){
     Route::post('login','LoginController@Login')->name('admin.login');
 
 });
+
+
+//
+//Route::get('subcategory',function (){
+//    $maincategory = App\Models\MainCategory::find(20);
+//   return $maincategory->subCategory ;
+//});
+//
+//Route::get('maincategory',function (){
+//    $subcatefory = App\Models\SubCategory::find(1);
+//    return $subcatefory->mainCategory ;
+//});

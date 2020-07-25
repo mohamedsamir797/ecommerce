@@ -66,7 +66,9 @@ class VendorsController extends Controller
                 'email' => $request->email ,
                 'category_id' => $request->category_id ,
                 'active' => $request->active ,
-                'password' => $request->password
+                'password' => $request->password ,
+                 'latitude' => $request->latitude ,
+                'longitude' => $request->longitude ,
 
             ]);
 
@@ -145,21 +147,28 @@ class VendorsController extends Controller
             else
                 $request->request->add(['active' => 1]);
 
-            $data = $request->except('_token', 'id', 'logo', 'password');
-
 
             if ($request->has('password') && !is_null($request->  password)) {
 
-                $data['password'] = $request->password;
-            }else{
+                Vendor::where('id', $id)
+                    ->update([
+                        'password' => bcrypt($request->password) ,
+                    ]);
+            }elseif ($request->has('address') && $request->address != 'أبحث هنا'){
+                Vendor::where('id', $id)
+                    ->update([
+                        'address' => $request->address ,
+                    ]);
+            } else{
                 Vendor::where('id', $id)
                     ->update([
                         'name' => $request->name ,
                         'mobile' => $request->mobile ,
-                        'address' => $request->address ,
                         'email' => $request->email ,
                         'category_id' => $request->category_id ,
                         'active' => $request->active ,
+                        'latitude' => $request->latitude ,
+                        'longitude' => $request->longitude ,
                     ]);
             }
 
@@ -191,7 +200,7 @@ class VendorsController extends Controller
             }
 
             $image =  Str::after($vendor->logo,'assets/');
-            $image = base_path('assets/'.$image);
+            $image = public_path('/assets/'.$image);
             unlink($image);
 
             $vendor->delete();
@@ -199,6 +208,7 @@ class VendorsController extends Controller
 
 
         }catch (\Exception $ex){
+            return $ex ;
             return redirect()->back()->with(['error' => 'حدث خطأ ما برجاء المحاولة لاحقا']);
         }
     }

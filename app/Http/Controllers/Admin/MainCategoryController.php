@@ -185,7 +185,7 @@ class MainCategoryController extends Controller
                return redirect()->back()->with(['error' => ' لا يمكن حذف هذا القسم ']);
            }
               $image =  Str::after($main_category->photo,'assets/');
-              $image = base_path('assets/'.$image);
+              $image = public_path('assets/'.$image);
               unlink($image);
 
                $main_category->categories()->delete();

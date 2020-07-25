@@ -9,7 +9,7 @@ class Vendor extends Model
 {
     use Notifiable ;
     protected $table = 'vendors';
-    protected $fillable = ['name','logo','password','mobile','address','email','active','category_id'];
+    protected $fillable = ['name','logo','password','mobile','address','latitude','longitude','email','active','category_id'];
 
     protected $hidden = ['category_id','password'];
 
@@ -21,7 +21,7 @@ class Vendor extends Model
         return ($val !== null) ? asset('/assets/'.$val) : '';
     }
     public function scopeSelection($query){
-        return $query->select('id','name','logo','category_id','email','address','mobile','active');
+        return $query->select('id','name','latitude','longitude','logo','category_id','email','address','mobile','active');
     }
     public function Maincategory(){
         return $this->belongsTo(\App\Models\MainCategory::class,'category_id');

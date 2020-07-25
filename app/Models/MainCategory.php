@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\MainCategoryObserver;
+use App\Models\SubCategory ;
 class MainCategory extends Model
 {
     protected $fillable = ['translation_lang','translation_of','name','slug','photo','active'];
@@ -34,6 +35,10 @@ class MainCategory extends Model
     }
     public function vendors(){
         return $this->hasMany(\App\Models\Vendor::class,'category_id');
+    }
+
+    public function subCategory(){
+        return $this->hasMany(SubCategory::class,'category_id');
     }
 
 }
